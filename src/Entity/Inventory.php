@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity(repositoryClass: InventoryRepository::class)]
 class Inventory
 {
@@ -15,51 +16,26 @@ class Inventory
     #[ORM\Column]
     private ?int $id = null;
 
-    /**
-     * @var Collection<int, Product>
-     */
-    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'inventory')]
-    private Collection $product;
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'inventories')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Product $product = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $quantity = null;
-
-    public function __construct()
-    {
-        $this->product = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return Collection<int, Product>
-     */
-    public function getProduct(): Collection
+    public function getProduct(): ?Product
     {
         return $this->product;
     }
 
-    public function addProduct(Product $product): static
+    public function setProduct(?Product $product): self
     {
-        if (!$this->product->contains($product)) {
-            $this->product->add($product);
-            $product->setInventory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProduct(Product $product): static
-    {
-        if ($this->product->removeElement($product)) {
-            // set the owning side to null (unless already changed)
-            if ($product->getInventory() === $this) {
-                $product->setInventory(null);
-            }
-        }
+        $this->product = $product;
 
         return $this;
     }
@@ -69,7 +45,7 @@ class Inventory
         return $this->quantity;
     }
 
-    public function setQuantity(?int $quantity): static
+    public function setQuantity(?int $quantity): self
     {
         $this->quantity = $quantity;
 

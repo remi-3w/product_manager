@@ -2,19 +2,17 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Inventory;
+use App\Entity\Product;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 
-class InventoryCrudController extends AbstractCrudController
+class ProductCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Inventory::class;
+        return Product::class;
     }
 
     
@@ -22,8 +20,7 @@ class InventoryCrudController extends AbstractCrudController
     {
         return [
             //IdField::new('id'),
-            AssociationField::new('product'),
-            IntegerField::new('quantity'),
+            TextField::new('name'),
             //TextEditorField::new('description'),
         ];
     }

@@ -15,8 +15,7 @@ class Product
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
-
-    #[ORM\ManyToOne(inversedBy: 'product')]
+    #[ORM\ManyToOne(inversedBy: 'products')] 
     private ?Inventory $inventory = null;
 
     public function getId(): ?int
@@ -47,4 +46,9 @@ class Product
 
         return $this;
     }
+
+    public function __toString(): string
+{
+    return $this->name ?? ''; // Retourne le nom du produit s'il existe, sinon une chaîne vide
+}
 }
